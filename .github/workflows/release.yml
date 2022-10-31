@@ -1,0 +1,22 @@
+on: [push]
+
+jobs:
+  tag_push_job:
+    runs-on: ubuntu-latest
+    name: A job to push a tag
+    steps:
+      # To use this repository's private action,
+      # you must check out the repository
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: get package version
+        id: step1
+        run: |
+          IFS="=" read name value <<< $(cat ././VERSION)
+          echo "::set-output name=version::$value"
+      - name: Push tag action step
+        uses: ./github/actions/action-release-on-push/ # Uses an action in the root directory
+        id: step2
+        with:
+          tags: "v${steps.step1.outputs.version}"
+          message: ''
