@@ -1,0 +1,17 @@
+# action.yml
+name: 'Tag and release on push'
+description: 'Adds a tag and release on push action.'
+inputs: 
+  tag:
+    description: A git tag name.
+    required: true
+  message: 
+    description: A message for the git tag.
+    required: false
+    default: ''
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.tag }}
+    - ${{ inputs.message }}
