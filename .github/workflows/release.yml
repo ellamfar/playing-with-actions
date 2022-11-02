@@ -9,18 +9,18 @@ jobs:
       # you must check out the repository
       - name: Checkout
         uses: actions/checkout@v3
-      - name: get package version
-        id: step1
+      - name: Get package version
         run: |
           cat ./VERSION
           IFS="=" read name value <<< $(cat ./VERSION)
-          echo "::set-output name=version::$value"
+          echo "version=$value" >> $GITHUB_OUTPUT
+        id: package_version
       - name: Check correct version
         run: |
-          echo "${steps.step1.outputs.version}"
+          echo "${{ steps.package_version.outputs.version }}"
       - name: Push tag action step
         uses: ./.github/actions/action-release-on-push/ # Uses an action in the root directory
         id: step2
         with:
-          tags: "v${steps.step1.outputs.version}"
+          tags: "v${{ steps.package_version.outputs.version }}"
           message: ""
