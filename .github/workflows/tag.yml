@@ -19,7 +19,7 @@ jobs:
           echo "newest_version_number=$value" >> $GITHUB_OUTPUT
         id: newest_package_version
       - name: Create and Push a Tag
-        if: ${{ steps.latest_package_version.outputs.latest_version_number != '1.0.0' }}
+        if: ${{ steps.latest_package_version.outputs.latest_version_number != 'v1.0.0' }}
         uses: ./.github/actions/action-tag-on-push/
         with:
           tag: "v${{ steps.newest_package_version.outputs.newest_version_number }}"
