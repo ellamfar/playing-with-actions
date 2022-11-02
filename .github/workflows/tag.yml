@@ -16,10 +16,20 @@ jobs:
       - name: Get the New Package Version
         run: |
           IFS="=" read name value <<< $(cat ./VERSION)
+          value=v${value}
           echo "newest_version_number=$value" >> $GITHUB_OUTPUT
         id: newest_package_version
+      - name: Compare Two Version Numbers
+        run: |
+          echo ${{ steps.latest_package_version.outputs.latest_version_number }}
+          echo ${{ steps.newest_package_version.outputs.newest_version_number }}
+          if [[ "${{ steps.latest_package_version.outputs.latest_version_number }}" != "${{ steps.newest_package_version.outputs.newest_version_number }}" ]]
+          then
+            echo "comparison=${{ true }}" >> $GITHUB_OUTPUT
+          fi
+        id: comparison_result
       - name: Create and Push a Tag
-        if: ${{ (steps.latest_package_version.outputs.latest_version_number != 'v1.0.0') }}
+        if: true == ${{ steps.comparison_result.outputs.comparison }}
         uses: ./.github/actions/action-tag-on-push/
         with:
           tag: "v${{ steps.newest_package_version.outputs.newest_version_number }}"
