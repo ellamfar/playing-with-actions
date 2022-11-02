@@ -7,6 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     name: A job to publish a tag to the GitHub repository
     steps:
+      - run: |
+          echo $GITHUB_REPOSITORY
       - name: Get the Latest Package Version 
         uses: oprypin/find-latest-tag@v1
         with:
