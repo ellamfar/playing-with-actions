@@ -7,12 +7,12 @@ jobs:
     runs-on: ubuntu-latest
     name: A job to publish a tag to the GitHub repository
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: Get the Latest Package Version 
         run: |
           echo "latest_version_number=$(git tag --sort=v:refname | tail -n 1)" >> $GITHUB_OUTPUT
         id: latest_package_version
-      - name: Checkout
-        uses: actions/checkout@v3
       - name: Get the New Package Version
         run: |
           IFS="=" read name value <<< $(cat ./VERSION)
