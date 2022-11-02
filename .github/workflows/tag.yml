@@ -10,7 +10,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0
+          fetch-depth: 5
       - name: Get the Latest Package Version 
         run: |
           echo "latest_version_number=$(git tag --sort=v:refname | tail -n 1)" >> $GITHUB_OUTPUT
@@ -28,8 +28,12 @@ jobs:
           if [[ "${{ steps.latest_package_version.outputs.latest_version_number }}" != "${{ steps.newest_package_version.outputs.newest_version_number }}" ]]
           then
             echo "comparison=${{ true }}" >> $GITHUB_OUTPUT
+          else
+            echo "comparison=${{ false }}" >> $GITHUB_OUTPUT
           fi
         id: comparison_result
+      - run: |
+         echo ${{ steps.comparison_result.outputs.comparison }}
       - name: Create and Push a Tag
         if: true == ${{ steps.comparison_result.outputs.comparison }}
         uses: ./.github/actions/action-tag-on-push/
