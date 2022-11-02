@@ -7,24 +7,20 @@ jobs:
     runs-on: ubuntu-latest
     name: A job to publish a tag to the GitHub repository
     steps:
-      - run: |
-          echo $GITHUB_REPOSITORY
       - name: Get the Latest Package Version 
-        uses: oprypin/find-latest-tag@v1
-        with:
-          repository: $GITHUB_REPOSITORY_OWNER/${{ github.event.repository.name }}
-          releases-only: false
-        id: last_package_version
+        run: |
+          echo "latest_version_number=$(git tag --sort=v:refname | tail -n 1)" >> $GITHUB_OUTPUT
+        id: latest_package_version
       - name: Checkout
         uses: actions/checkout@v3
       - name: Get the New Package Version
         run: |
           IFS="=" read name value <<< $(cat ./VERSION)
-          echo "version=$value" >> $GITHUB_OUTPUT
-        id: new_package_version
+          echo "newest_version_number=$value" >> $GITHUB_OUTPUT
+        id: newest_package_version
       - name: Create and Push a Tag
         uses: ./.github/actions/action-tag-on-push/
         with:
-          tag: "v${{ steps.new_package_version.outputs.version }}"
+          tag: "v${{ steps.newest_package_version.outputs.newest_version_number }}"
           message: ""
-        if: steps.last_package_version.outputs.tag != "v${{ steps.new_package_version.outputs.version }}"
+        if: steps.latest_package_version.outputs.latest_version_number != "v${{ steps.newest_package_version.outputs.newest_version_number }}"
