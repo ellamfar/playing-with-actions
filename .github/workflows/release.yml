@@ -12,7 +12,8 @@ jobs:
       - name: get package version
         id: step1
         run: |
-          IFS="=" read name value <<< $(cat ././VERSION)
+          cat ./VERSION
+          IFS="=" read name value <<< $(cat ./VERSION)
           echo "::set-output name=version::$value"
       - name: Check correct version
         run: |
