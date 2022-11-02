@@ -9,8 +9,8 @@ jobs:
     steps:
       - name: Install Packages
         run: |
-          apt update
-          apt install git
+          sudo apt update
+          sudo apt install git
       - name: Checkout
         uses: actions/checkout@v3
       - name: Get the Latest Package Version 
