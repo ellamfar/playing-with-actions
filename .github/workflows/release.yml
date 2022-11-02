@@ -1,22 +1,21 @@
+name: Publish Tag
+
 on: [push]
 
 jobs:
-  tag_push_job:
+  publish_tag:
     runs-on: ubuntu-latest
-    name: A job to push a tag
+    name: A job to publish a tag to the GitHub repository
     steps:
-      # To use this repository's private action,
-      # you must check out the repository
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Get package version
+      - name: Get Package Version
         run: |
           IFS="=" read name value <<< $(cat ./VERSION)
           echo "version=$value" >> $GITHUB_OUTPUT
         id: package_version
-      - name: Push tag action step
-        uses: ./.github/actions/action-release-on-push/ # Uses an action in the root directory
-        id: step2
+      - name: Create and Push a Tag
+        uses: ./.github/actions/action-tag-on-push/
         with:
           tag: "v${{ steps.package_version.outputs.version }}"
           message: ""

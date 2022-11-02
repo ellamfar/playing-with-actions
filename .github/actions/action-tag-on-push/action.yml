@@ -1,12 +1,11 @@
-# action.yml
-name: 'Tag and release on push'
-description: 'Adds a tag and release on push action.'
+name: 'GitHub Tag'
+description: 'Publish GitHub tags from a push action'
 inputs: 
   tag:
-    description: A git tag name.
+    description: The git tag name.
     required: true
   message: 
-    description: A message for the git tag.
+    description: The message for the git tag.
     required: false
     default: ''
 runs:
