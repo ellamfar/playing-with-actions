@@ -12,7 +12,7 @@ jobs:
       - name: Get the Latest Package Version 
         uses: oprypin/find-latest-tag@v1
         with:
-          repository: $GITHUB_REPOSITORY
+          repository: $GITHUB_REPOSITORY_OWNER/${{ github.event.repository.name }}
           releases-only: false
         id: last_package_version
       - name: Checkout
