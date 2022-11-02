@@ -32,5 +32,5 @@ jobs:
         if: true == ${{ steps.comparison_result.outputs.comparison }}
         uses: ./.github/actions/action-tag-on-push/
         with:
-          tag: "v${{ steps.newest_package_version.outputs.newest_version_number }}"
+          tag: "${{ steps.newest_package_version.outputs.newest_version_number }}"
           message: ""
