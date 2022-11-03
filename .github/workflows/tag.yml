@@ -21,22 +21,19 @@ jobs:
           value=v${value}
           echo "newest_version_number=$value" >> $GITHUB_OUTPUT
         id: newest_package_version
-      - name: Compare Two Version Numbers
-        run: |
-          echo ${{ steps.latest_package_version.outputs.latest_version_number }}
-          echo ${{ steps.newest_package_version.outputs.newest_version_number }}
-          if [[ "${{ steps.latest_package_version.outputs.latest_version_number }}" != "${{ steps.newest_package_version.outputs.newest_version_number }}" ]]
-          then
-            echo "comparison=${{ true }}" >> $GITHUB_OUTPUT
-          else
-            echo "comparison=${{ false }}" >> $GITHUB_OUTPUT
-          fi
-        id: comparison_result
-      - run: |
-         echo ${{ steps.comparison_result.outputs.comparison }}
+      # - name: Compare Two Version Numbers
+      #   run: |
+      #     if [[ "${{ steps.latest_package_version.outputs.latest_version_number }}" != "${{ steps.newest_package_version.outputs.newest_version_number }}" ]]
+      #     then
+      #       echo "comparison=${{ true }}" >> $GITHUB_OUTPUT
+      #     else
+      #       echo "comparison=${{ false }}" >> $GITHUB_OUTPUT
+      #     fi
+      #   id: comparison_result
       - name: Create and Push a Tag
         uses: ./.github/actions/action-tag-on-push/
         with:
           tag: "${{ steps.newest_package_version.outputs.newest_version_number }}"
           message: ""
-        if: steps.comparison_result.outputs.comparison == 'true'
+        if: steps.latest_package_version.outputs.latest_version_number != steps.newest_package_version.outputs.newest_version_number
+        # if: steps.comparison_result.outputs.comparison == 'true'
