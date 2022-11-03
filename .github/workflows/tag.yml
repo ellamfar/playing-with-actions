@@ -1,26 +1,34 @@
-name: Publish Tag
+name: publish-tag
 
-on: [push]
+on:
+  push:
+    branches:
+      - 'main'
 
 jobs:
   publish_tag:
+
     runs-on: ubuntu-latest
     name: A job to publish a tag to the GitHub repository
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+
       - name: Get the Latest Package Version 
         run: |
           echo "latest_version_number=$(git tag --sort=v:refname | tail -n 1)" >> $GITHUB_OUTPUT
         id: latest_package_version
+
       - name: Get the New Package Version
         run: |
           IFS="=" read name value <<< $(cat ./VERSION)
           value=v${value}
           echo "newest_version_number=$value" >> $GITHUB_OUTPUT
         id: newest_package_version
+        
       - name: Create and Push a Tag
         uses: ./.github/actions/action-tag-on-push/
         with:

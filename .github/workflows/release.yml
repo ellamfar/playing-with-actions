@@ -1,0 +1,18 @@
+name: Publish Release
+
+on:
+  push:
+    tags:
+      - '**'
+
+jobs:
+  publish_release:
+
+    runs-on: ubuntu-latest
+    name: A job to publish a release to the GitHub repository
+
+    steps:
+      - name: Determine Tag
+        run: echo \"RELEASE_TAG=${GITHUB_REF#refs/tags/}\" >> $GITHUB_ENV
+
+      - run: echo ${{ process.env.RELEASE_TAG }}
