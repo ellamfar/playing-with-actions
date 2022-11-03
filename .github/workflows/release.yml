@@ -1,0 +1,16 @@
+name: Publish Release
+
+on:
+  push:
+    tags:
+      - v**
+
+jobs:
+  publish_release:
+
+    runs-on: ubuntu-latest
+    name: A job to publish a release to the GitHub repository
+
+    steps:
+      - name: Determine Tag
+        run: echo "Hello!"
