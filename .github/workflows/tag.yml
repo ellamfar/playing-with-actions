@@ -35,8 +35,8 @@ jobs:
       - run: |
          echo ${{ steps.comparison_result.outputs.comparison }}
       - name: Create and Push a Tag
-        if: true == ${{ steps.comparison_result.outputs.comparison }}
         uses: ./.github/actions/action-tag-on-push/
         with:
           tag: "${{ steps.newest_package_version.outputs.newest_version_number }}"
           message: ""
+        if: steps.comparison_result.outputs.comparison == 'true'
